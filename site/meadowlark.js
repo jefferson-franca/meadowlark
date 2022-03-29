@@ -1,7 +1,7 @@
 const text = require('body-parser/lib/types/text')
 const express = require('express')
 const expressHandlebars = require('express-handlebars').engine
-
+const sorte = require('../lib/sorte')
 const app = express()
 // configura o view engine Handlebars
 app.engine('handlebars',expressHandlebars({
@@ -31,8 +31,8 @@ const port = process.env.PORT || 3000
 app.get('/',(req,res)=> res.render('home'))
 
 app.get('/about',(req,res)=>{
-    const randomSorte = sorte[Math.floor(Math.random()*sorte.length)]
-    res.render('about',{Sorteio:randomSorte})
+  //  const randomSorte = sorte[Math.floor(Math.random()*sorte.length)]
+    res.render('about',{Sorteio:sorte.pegaSorte})
 })
 // página 404 personalizada
 app.use((req,res)=>{
@@ -46,13 +46,13 @@ res.status(500)
 res.render('500')
 })
 
-const sorte = [
+/*const sorte = [
     "Conquiste seus medos ou eles vão conquistar você.",
     "Os rios precisam de nascentes.",
     "Não tema o que você não conhece.",
     "Você terá uma agradável surpresa.",
     "Sempre que possível, seja simples.",
 ]
-
+*/
 app.listen(port,()=> console.log(
     'Express started on http://localhost:${port};'+ 'press Ctrl-C to terminate.'))
