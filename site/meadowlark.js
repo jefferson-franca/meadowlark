@@ -2,6 +2,7 @@ const text = require('body-parser/lib/types/text')
 const express = require('express')
 const expressHandlebars = require('express-handlebars').engine
 const sorte = require('../lib/sorte')
+const handlers = require('../lib/handlers')
 const app = express()
 // configura o view engine Handlebars
 app.engine('handlebars',expressHandlebars({
@@ -28,23 +29,22 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT || 3000
 
-app.get('/',(req,res)=> res.render('home'))
+app.get('/', handlers.home)
+//app.get('/',(req,res)=> res.render('home'))
 
-app.get('/about',(req,res)=>{
+app.get('/about', handlers.about)
   //  const randomSorte = sorte[Math.floor(Math.random()*sorte.length)]
-    res.render('about',{Sorteio:sorte.pegaSorte})
-})
+  //  res.render('about',{Sorteio:sorte.pegaSorte})
+  
 // página 404 personalizada
-app.use((req,res)=>{
-    res.status(404)
-    res.render('404')
-})
+app.use(handlers.notFound)
+
 // página 500 personalizada
-app.use((err,req,res,next)=>{
-console.error(err.message)
+app.use(handlers.serverError)
+/*console.error(err.message)
 res.status(500)
 res.render('500')
-})
+})*/
 
 /*const sorte = [
     "Conquiste seus medos ou eles vão conquistar você.",
