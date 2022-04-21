@@ -1,18 +1,28 @@
+/*eslint-disable no-unused-vars*/
 const text = require('body-parser/lib/types/text')
+/*eslint-enable no-unused-vars*/
 const express = require('express')
 const expressHandlebars = require('express-handlebars').engine
-const sorte = require('../lib/sorte')
-const handlers = require('../lib/handlers')
+/*eslint-disable no-unused-vars*/
+const sorte = require('./lib/sorte')
+/*eslint-enable no-unused-vars*/
+const handlers = require('./lib/handlers')
+const port =  (process.env.port || 3000)
 const app = express()
+
 // configura o view engine Handlebars
 app.engine('handlebars',expressHandlebars({
     defaultLayout:'main'
 }))
 app.set('view engine','handlebars')
 
+// Tirando erro de variaveis não declaradas do eslint
+/*eslint no-undef: "error"*/
+/*eslint-env node*/
+
 // Servindo o Meddleware stático
 app.use(express.static(__dirname + '/public'))
-/* -- PEGUEI ESSE CÓDIGO DO SITE STACK OVERFLOW - Deixa como referência para possiveis problemas a freten
+/* -- PEGUEI ESSE CÓDIGO DO SITE STACK OVERFLOW - Deixa como referência para possiveis problemas a frente
 const express = require('express');
 const { engine } = require ('express-handlebars');
 
@@ -27,7 +37,7 @@ app.get('/', (req, res) => {
 });
 */
 
-const port = process.env.PORT || 3000
+
 
 app.get('/', handlers.home)
 //app.get('/',(req,res)=> res.render('home'))
@@ -54,5 +64,11 @@ res.render('500')
     "Sempre que possível, seja simples.",
 ]
 */
-app.listen(port,()=> console.log(
-    'Express started on http://localhost:${port};'+ 'press Ctrl-C to terminate.'))
+//app.listen(port,()=> console.log('Express started on http://localhost:${port};'+ 'press Ctrl-C to terminate.'))
+
+if(require.main === module){
+    app.listen(port, () =>{console.log('Express started on http://localhost:'+ port + ' press Ctrl-C to terminate.')
+    })
+}else{
+    module.exports = app
+}
